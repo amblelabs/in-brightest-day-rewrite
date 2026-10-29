@@ -28,9 +28,17 @@ dependencies {
 
     // Required dependencies
     modImplementation("com.terraformersmc:modmenu:${commonMod.dep("modmenu")}")
+
+    // Optional dependencies
+    commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
 }
 
 loom {
+    // the widener uses 26.x (unobfuscated) names, so pre-26 versions skip it
+    if (stonecutter.eval(stonecutter.current.version, ">=26")) {
+        accessWidenerPath = rootProject.file("common/src/main/resources/${commonMod.id}.accesswidener")
+    }
+
     runs {
         getByName("client") {
             client()

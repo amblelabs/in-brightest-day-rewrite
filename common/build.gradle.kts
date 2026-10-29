@@ -19,6 +19,11 @@ stonecutter {
 //}
 
 loom {
+    // the widener uses 26.x (unobfuscated) names, so pre-26 versions skip it
+    if (stonecutter.eval(stonecutter.current.version, ">=26")) {
+        accessWidenerPath = rootProject.file("common/src/main/resources/${commonMod.id}.accesswidener")
+    }
+
     mixin {
         useLegacyMixinAp = false
     }
@@ -36,6 +41,8 @@ dependencies {
 
     compileOnly("org.spongepowered:mixin:0.8.5")
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
+
+    commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
 }
 
 // TODO(template): same as buildSrc/.../multiloader-loader.gradle.kts

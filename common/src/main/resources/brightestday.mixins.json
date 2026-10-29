@@ -5,7 +5,13 @@
   "refmap": "${modId}.refmap.json",
   "compatibilityLevel": "JAVA_${javaVersion}",
   "mixins": [],
-  "client": [],
+  "client": [
+    "client.GameRendererHandMixin",
+    "client.IrisPipelineMixin",
+    "client.LevelRendererFrostMixin",
+    "client.PreparedFrameAccessor",
+    "client.SubmitNodeCollectionMixin"
+  ],
   "server": [],
   "injectors": {
     "defaultRequire": 1

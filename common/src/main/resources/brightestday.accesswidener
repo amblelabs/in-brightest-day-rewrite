@@ -1,0 +1,14 @@
+accessWidener v2 official
+
+# render pipeline snippets used by client/render
+accessible field net/minecraft/client/renderer/RenderPipelines GLOBALS_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines LIGHTNING_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines ENTITY_NO_LIGHTMAP_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines EYES_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines OIT_ENTITY_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines DEBUG_FILLED_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+accessible field net/minecraft/client/renderer/RenderPipelines OIT_DEBUG_FILLED_SNIPPET Lcom/mojang/renderpearl/api/pipeline/RenderPipeline$Snippet;
+
+accessible method net/minecraft/client/renderer/RenderPipelines register (Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;)Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;
+accessible method net/minecraft/client/renderer/RenderPipelines register (Lnet/minecraft/client/renderer/oit/OitPipelineSet;)Lnet/minecraft/client/renderer/oit/OitPipelineSet;
+accessible method net/minecraft/client/renderer/rendertype/RenderType create (Ljava/lang/String;Lnet/minecraft/client/renderer/rendertype/RenderSetup;)Lnet/minecraft/client/renderer/rendertype/RenderType;
