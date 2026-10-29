@@ -1,5 +1,6 @@
 package dev.amble.brightestday.platform.services;
 
+import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -52,6 +53,8 @@ public interface PlatformHelper {
 
     <T> Registrar<T> createRegistrar(Registry<T> registry);
     <T> Registrar<T> createRegistrar(ResourceKey<? extends Registry<T>> registry);
+
+    AttachmentRegistrar createAttachmentRegistrar();
 
     interface Registrar<B> {
 

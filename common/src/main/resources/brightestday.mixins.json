@@ -7,6 +7,8 @@
   "mixins": [],
   "client": [
     "client.AvatarRendererMixin",
+    "client.AvatarRenderStateMixin",
+    "client.FirstPersonHandsAndItemsRendererMixin",
     "client.GameRendererHandMixin",
     "client.IrisPipelineMixin",
     "client.LevelRendererFrostMixin",

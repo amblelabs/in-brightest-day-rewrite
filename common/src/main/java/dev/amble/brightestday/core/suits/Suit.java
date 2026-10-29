@@ -10,6 +10,6 @@ public record Suit(Identifier id) {
     ).apply(instance, Suit::new));
 
     public static Identifier getCorrectedPath(Identifier id) {
-        return id.withPrefix("textures/suits");
+        return id.withPrefix("textures/suits/");
     }
 }

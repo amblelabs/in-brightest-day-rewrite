@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "brightestday:item/star_sapphire_power_ring"
+  }
+}

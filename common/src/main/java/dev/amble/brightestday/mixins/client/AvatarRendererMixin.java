@@ -1,5 +1,6 @@
 package dev.amble.brightestday.mixins.client;
 
+import dev.amble.brightestday.client.render.SlottedRingRenderer;
 import dev.amble.brightestday.client.render.SuitRender;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -13,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class AvatarRendererMixin {
     @Inject(method = "extractRenderState(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;F)V", at = @At("TAIL"))
     private void brightestday$extractRenderStates(Avatar entity, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
+        SlottedRingRenderer.extract(entity, state);
         SuitRender.extract(entity, state, partialTicks);
     }
 }

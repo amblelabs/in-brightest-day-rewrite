@@ -1,6 +1,7 @@
 package dev.amble.brightestday.platform;
 
 import dev.amble.brightestday.BrightestDay;
+import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amble.brightestday.platform.services.PlatformHelper;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -75,6 +76,11 @@ public class FabricPlatformHelper implements PlatformHelper {
     @SuppressWarnings("unchecked")
     public <T> Registrar<T> createRegistrar(ResourceKey<? extends Registry<T>> registry) {
         return this.createRegistrar((Registry<T>) BuiltInRegistries.REGISTRY.get(registry.identifier()).orElseThrow().value());
+    }
+
+    @Override
+    public AttachmentRegistrar createAttachmentRegistrar() {
+        return new FabricAttachmentRegistrar(BrightestDay.MOD_ID);
     }
 
     public record FabricRegistrar<B>(String namespace, Registry<B> registry) implements Registrar<B> {

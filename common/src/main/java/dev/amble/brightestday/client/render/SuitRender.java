@@ -3,7 +3,12 @@ package dev.amble.brightestday.client.render;
 import com.mojang.blaze3d.platform.NativeImage;
 import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.client.render.util.SuitRenderCallback;
+import dev.amble.brightestday.core.BrightestDayAttachments;
+import dev.amble.brightestday.core.BrightestDayItems;
+import dev.amble.brightestday.core.BrightestDayRegistries;
+import dev.amble.brightestday.core.items.PowerRingItem;
 import dev.amble.brightestday.core.lanterns.LanternCorps;
+import dev.amble.brightestday.core.suits.Suit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -11,11 +16,13 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.ClientAsset;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Avatar;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelType;
 import net.minecraft.world.entity.player.PlayerSkin;
 import net.minecraft.world.item.Items;
@@ -49,9 +56,14 @@ public class SuitRender implements SuitRenderCallback {
 
     // partialTicks is here for when we eventually readd the glow stuff
     public static void extract(Avatar entity, AvatarRenderState state, float partialTicks) {
-        if (entity.getMainHandItem().getItem() != Items.POLISHED_GRANITE) return;
 
-        Entry entry = update(entity.getId(), state.skin, state.mainArm, LanternCorps.GREEN);
+        if (!(entity instanceof Player player)) return;
+
+        Optional<LanternCorps> corps = PowerRingItem.getWornCorps(player);
+
+        if (corps.isEmpty()) return;
+
+        Entry entry = update(entity.getId(), state.skin, state.mainArm, corps.get());
 
         if (entry == null) return;
 
@@ -95,6 +107,7 @@ public class SuitRender implements SuitRenderCallback {
 
         boolean slim = playerSkin.model() == PlayerModelType.SLIM;
         int[] suit = suit(corps, arm, slim);
+        if (suit == null) return null;
 
         Key key = new Key(skinPath, corps, slim);
         Entry entry = ENTRIES.get(id);
@@ -209,10 +222,12 @@ public class SuitRender implements SuitRenderCallback {
     }
 
     private static int @Nullable [] suit(LanternCorps corps, HumanoidArm ringArm, boolean slim) {
-        String key = corps.getSerializedName() + "/" + ringArm.ordinal() + "/" + slim;
+        Suit suit = selectedSuit();
+        if (suit == null) return null;
+        String key = suit.id() + "/" + corps.getSerializedName() + "/" + ringArm.ordinal() + "/" + slim;
         return SUITS.computeIfAbsent(key, unused -> {
-            int[] pixels = loadSuit(corps, ringArm);
-            if (pixels == null) pixels = loadSuit(corps, ringArm.getOpposite());
+            Identifier texture = findTexture(suit, corps, ringArm);
+            int[] pixels = texture == null ? null : read(texture);
             if (pixels == null) return Optional.empty();
             if (!slim) pixels = widen(pixels);
             return Optional.of(shiftHead(pixels));
@@ -254,12 +269,33 @@ public class SuitRender implements SuitRenderCallback {
         }
     }
 
-    private static int @Nullable [] loadSuit(LanternCorps corps, HumanoidArm side) {
-        // Registry<Suit> suits = Minecraft.getInstance().level.registryAccess().lookupOrThrow(BrightestDayRegistries.SUIT);
-        String pathKey = "textures/suits/lanterns/green_lantern_";
-        Identifier path = BrightestDay.id(pathKey + side.name().toLowerCase() + ".png");
-        int[] pixels = read(path);
-        return pixels != null && pixels.length == SIZE * SIZE ? pixels : null;
+    private static @Nullable Suit selectedSuit() {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null) return null;
+        Registry<Suit> suits = level.registryAccess().lookupOrThrow(BrightestDayRegistries.SUIT);
+        return suits.getValue(BrightestDay.id("lanterns_suit"));
+    }
+
+    private static @Nullable Identifier findTexture(Suit suit, LanternCorps corps, HumanoidArm side) {
+        Identifier directory = Suit.getCorrectedPath(suit.id());
+        Map<Identifier, Resource> files = Minecraft.getInstance().getResourceManager().listResources(directory.getPath(),
+                id -> id.getNamespace().equals(directory.getNamespace()) && id.getPath().endsWith(".png"));
+
+        String own = "_" + side.getSerializedName();
+        String opposite = "_" + side.getOpposite().getSerializedName();
+        Identifier fallback = null;
+        for (Identifier file : files.keySet()) {
+            String path = file.getPath();
+            String name = path.substring(path.lastIndexOf('/') + 1, path.length() - ".png".length());
+            if (!isFor(name, corps.getSerializedName()) && !isFor(name, corps.emotion())) continue;
+            if (name.endsWith(own)) return file;
+            if (fallback == null || !name.endsWith(opposite)) fallback = file;
+        }
+        return fallback;
+    }
+
+    private static boolean isFor(String name, String token) {
+        return name.equals(token) || name.startsWith(token + "_");
     }
 
     private static int @Nullable [] read(Identifier path) {

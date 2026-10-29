@@ -1,5 +1,10 @@
 package dev.amble.brightestday;
 
+import dev.amble.brightestday.core.BrightestDayAttachments;
+import dev.amble.brightestday.core.BrightestDayBlockEntities;
+import dev.amble.brightestday.core.BrightestDayBlocks;
+import dev.amble.brightestday.core.BrightestDayCreativeTabs;
+import dev.amble.brightestday.core.BrightestDayItems;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,5 +23,10 @@ public class BrightestDay {
     }
 
     public static void init() {
+        BrightestDayAttachments.init();
+        BrightestDayBlocks.register();
+        BrightestDayBlockEntities.register();
+        BrightestDayItems.register();
+        BrightestDayCreativeTabs.register();
     }
 }

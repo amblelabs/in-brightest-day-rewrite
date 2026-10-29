@@ -2,6 +2,7 @@ package dev.amble.brightestday.platform;
 
 import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.BrightestDayNeoForge;
+import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amble.brightestday.platform.services.PlatformHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -74,6 +75,11 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public <T> Registrar<T> createRegistrar(ResourceKey<? extends Registry<T>> registry) {
         return new NeoForgeRegistrar<>(BrightestDay.MOD_ID, registry);
+    }
+
+    @Override
+    public AttachmentRegistrar createAttachmentRegistrar() {
+        return new NeoForgeAttachmentRegistrar(BrightestDay.MOD_ID);
     }
 
     public record NeoForgeRegistrar<B>(String namespace, ResourceKey<? extends Registry<B>> registryKey, Map<String, DeferredRegister<B>> registers) implements Registrar<B> {
