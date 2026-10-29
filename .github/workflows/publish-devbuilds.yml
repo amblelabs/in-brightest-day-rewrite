@@ -4,14 +4,17 @@ on:
   workflow_dispatch:
   push:
       paths:
-        - src/**
-        - build.gradle
+        - common/**
+        - fabric/**
+        - neoforge/**
+        - buildSrc/**
+        - versions/**
         - gradle.properties
-        - settings.gradle
+        - settings.gradle.kts
+        - stonecutter.gradle.kts
         - gradle/**
         - gradlew
         - gradlew.bat
-        - versioning.gradle
         - .github/workflows/publish-devbuilds.yml
 
 jobs:
@@ -35,27 +38,8 @@ jobs:
         distribution: 'temurin'
         cache: 'gradle'
 
-    - name: Restore DataGen cache
-      id: cache-restore
-      uses: actions/cache/restore@v6
-      with:
-        path: src/main/generated
-        key: datagen-${{ github.run_id }}
-        restore-keys:
-          datagen-
-
-    - name: Run DataGen
-      run: ./gradlew --configuration-cache runDatagen
-
-    - name: Save DataGen cache
-      id: cache-save
-      uses: actions/cache/save@v6
-      with:
-        path: src/main/generated
-        key: ${{ steps.cache-restore.outputs.cache-primary-key }}
-    
     - name: Build
-      run: ./gradlew --configuration-cache build
+      run: ./gradlew :fabric:26.3:build
 
     - name: Publish artifacts
       uses: drtheodor/discord-webhook-upload-action@v0.4
@@ -65,12 +49,12 @@ jobs:
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDmP1EjlVDygiFMy8_Nxg9Q7M7eZfLKEXyKCRtosnS_J3lTLJMT6lpPCA&s=10'
         
         message: |
-          <:new1:1253371736510959636><:new2:1253371805734015006> New **In Brightest Day** dev build [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/in-brightest-day/actions/runs/${{ github.run_id }}>):
+          <:new1:1253371736510959636><:new2:1253371805734015006> New **In Brightest Day** dev build [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/in-brightest-day-rewrite/actions/runs/${{ github.run_id }}>):
           ${commits}
           
         file: |
-          build/libs/*.jar
-          !build/libs/*-sources.jar
+          fabric/versions/26.3/build/libs/*.jar
+          !fabric/versions/26.3/build/libs/*-sources.jar
     - name: Send failure notice
       if: failure()
       uses: drtheodor/discord-webhook-upload-action@v0.4
@@ -80,4 +64,4 @@ jobs:
         avatar: 'https://i.imgur.com/uiFqrQh.png'
         
         message: |
-          <:al_error:1513885241339678852> New **In Brightest Day** dev build [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/in-brightest-day/actions/runs/${{ github.run_id }}>) **failed** to build! <a:al_explosion:1467652202356150272>
+          <:al_error:1513885241339678852> New **In Brightest Day** dev build [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/in-brightest-day-rewrite/actions/runs/${{ github.run_id }}>) **failed** to build! <a:al_explosion:1467652202356150272>
