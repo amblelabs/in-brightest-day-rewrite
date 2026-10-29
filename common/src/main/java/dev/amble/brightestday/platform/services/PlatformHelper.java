@@ -51,6 +51,8 @@ public interface PlatformHelper {
 
     void sendToTracking(Entity entity, CustomPacketPayload packet);
 
+    void sendToServer(CustomPacketPayload packet);
+
     <T> Registrar<T> createRegistrar(Registry<T> registry);
     <T> Registrar<T> createRegistrar(ResourceKey<? extends Registry<T>> registry);
 

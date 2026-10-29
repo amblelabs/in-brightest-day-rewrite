@@ -1,10 +1,13 @@
 package dev.amble.brightestday.core.blocks;
 
+import dev.amble.brightestday.client.screens.SuitSelectorScreen;
 import dev.amble.brightestday.core.BrightestDayAttachments;
 import dev.amble.brightestday.core.BrightestDayComponents;
 import dev.amble.brightestday.core.blockentities.LanternBlockEntity;
 import dev.amble.brightestday.core.items.PowerRingItem;
 import dev.amble.brightestday.core.lanterns.LanternCorps;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -121,7 +124,12 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!(stack.getItem() instanceof PowerRingItem)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+        if (!(stack.getItem() instanceof PowerRingItem)) {
+            if (level instanceof ClientLevel) {
+                Minecraft.getInstance().setScreenAndShow(new SuitSelectorScreen(Component.literal("")));
+            }
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
         return this.recharge(state, level, pos, player, stack, false);
     }
 

@@ -1,9 +1,12 @@
 package dev.amble.brightestday.core;
 
+import com.mojang.serialization.Codec;
+import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.platform.Services;
 import dev.amble.brightestday.platform.attachment.Attachment;
 import dev.amble.brightestday.platform.attachment.AttachmentBuilder;
 import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,6 +25,12 @@ public class BrightestDayAttachments {
                     .persistent(ItemStack.OPTIONAL_CODEC)
                     .copyOnDeath()
                     .sync(ItemStack.OPTIONAL_STREAM_CODEC));
+
+    public static final Attachment<Identifier> SUIT = REGISTRAR.register("suit",
+            AttachmentBuilder.builder(() -> BrightestDay.id("lanterns_suit"))
+                    .persistent(Identifier.CODEC)
+                    .copyOnDeath()
+                    .sync(Identifier.STREAM_CODEC));
 
     /*public static final Attachment<ColorTweak> COLOR_TWEAK = REGISTRAR.register("color_tweak",
             AttachmentBuilder.builder(() -> ColorTweak.NONE)

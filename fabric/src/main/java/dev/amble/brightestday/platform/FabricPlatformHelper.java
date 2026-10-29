@@ -3,6 +3,7 @@ package dev.amble.brightestday.platform;
 import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amble.brightestday.platform.services.PlatformHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
@@ -65,6 +66,11 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public void sendToTracking(Entity entity, CustomPacketPayload packet) {
         sendToAll(PlayerLookup.tracking(entity), packet);
+    }
+
+    @Override
+    public void sendToServer(CustomPacketPayload packet) {
+        ClientPlayNetworking.send(packet);
     }
 
     @Override

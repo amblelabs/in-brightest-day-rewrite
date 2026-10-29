@@ -8,6 +8,5 @@ import net.minecraft.world.level.block.state.BlockState;
 public class LanternBlockEntity extends BlockEntity {
     public LanternBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BrightestDayBlockEntities.LANTERN.value(), blockPos, blockState);
-
     }
 }

@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.NativeImage;
 import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.client.render.util.SuitRenderCallback;
 import dev.amble.brightestday.core.BrightestDayAttachments;
-import dev.amble.brightestday.core.BrightestDayItems;
 import dev.amble.brightestday.core.BrightestDayRegistries;
 import dev.amble.brightestday.core.items.PowerRingItem;
 import dev.amble.brightestday.core.lanterns.LanternCorps;
@@ -16,7 +15,6 @@ import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.core.ClientAsset;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.ARGB;
@@ -63,7 +61,11 @@ public class SuitRender implements SuitRenderCallback {
 
         if (corps.isEmpty()) return;
 
-        Entry entry = update(entity.getId(), state.skin, state.mainArm, corps.get());
+        Suit suit = selectedSuit(player);
+
+        if (suit == null) return;
+
+        Entry entry = update(entity.getId(), state.skin, state.mainArm, corps.get(), suit);
 
         if (entry == null) return;
 
@@ -100,16 +102,16 @@ public class SuitRender implements SuitRenderCallback {
         SKINS.clear();
     }
 
-    static @Nullable Entry update(int id, PlayerSkin playerSkin, HumanoidArm arm, LanternCorps corps) {
+    static @Nullable Entry update(int id, PlayerSkin playerSkin, HumanoidArm arm, LanternCorps corps, Suit selected) {
         Identifier skinPath = playerSkin.body().texturePath();
         Skin skin = skin(skinPath);
         if (skin == null) return null;
 
         boolean slim = playerSkin.model() == PlayerModelType.SLIM;
-        int[] suit = suit(corps, arm, slim);
+        int[] suit = suit(selected, corps, arm, slim);
         if (suit == null) return null;
 
-        Key key = new Key(skinPath, corps, slim);
+        Key key = new Key(skinPath, selected.id(), corps, slim);
         Entry entry = ENTRIES.get(id);
         if (entry != null && entry.size != skin.size) {
             entry.close();
@@ -221,9 +223,7 @@ public class SuitRender implements SuitRenderCallback {
         return -1;
     }
 
-    private static int @Nullable [] suit(LanternCorps corps, HumanoidArm ringArm, boolean slim) {
-        Suit suit = selectedSuit();
-        if (suit == null) return null;
+    private static int @Nullable [] suit(Suit suit, LanternCorps corps, HumanoidArm ringArm, boolean slim) {
         String key = suit.id() + "/" + corps.getSerializedName() + "/" + ringArm.ordinal() + "/" + slim;
         return SUITS.computeIfAbsent(key, unused -> {
             Identifier texture = findTexture(suit, corps, ringArm);
@@ -269,11 +269,12 @@ public class SuitRender implements SuitRenderCallback {
         }
     }
 
-    private static @Nullable Suit selectedSuit() {
-        ClientLevel level = Minecraft.getInstance().level;
-        if (level == null) return null;
-        Registry<Suit> suits = level.registryAccess().lookupOrThrow(BrightestDayRegistries.SUIT);
-        return suits.getValue(BrightestDay.id("lanterns_suit"));
+    private static @Nullable Suit selectedSuit(Player player) {
+        Identifier id = BrightestDayAttachments.SUIT.get(player);
+        return player.registryAccess().lookupOrThrow(BrightestDayRegistries.SUIT).stream()
+                .filter(suit -> suit.id().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
     private static @Nullable Identifier findTexture(Suit suit, LanternCorps corps, HumanoidArm side) {
@@ -309,7 +310,7 @@ public class SuitRender implements SuitRenderCallback {
         }
     }
 
-    private record Key(Identifier skin, LanternCorps corps, boolean slim) {}
+    private record Key(Identifier skin, Identifier suit, LanternCorps corps, boolean slim) {}
 
     static final class Entry {
         final Identifier bodyId;
