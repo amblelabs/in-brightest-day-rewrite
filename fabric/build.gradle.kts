@@ -26,11 +26,13 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-language-kotlin:${commonMod.dep("fabric_language_kotlin")}")
 
-    // Required dependencies
     modImplementation("com.terraformersmc:modmenu:${commonMod.dep("modmenu")}")
 
-    // Optional dependencies
     commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+
+    implementation("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
+    include("com.alphacephei:vosk:${commonMod.dep("vosk")}")
 }
 
 loom {

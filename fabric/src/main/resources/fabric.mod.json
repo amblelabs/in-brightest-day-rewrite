@@ -33,6 +33,9 @@
     "${modId}.mixins.json",
     "${modId}.fabric.mixins.json"
   ],
+  "suggests": {
+    "voicechat": "*"
+  },
   "depends": {
     "fabricloader": ">=${fabricLoaderVersion}",
     "fabric-api": "*",

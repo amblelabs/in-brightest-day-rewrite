@@ -14,6 +14,15 @@ neoForge {
 }
 
 dependencies {
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+
+    // bundled; JNA comes from minecraft
+    implementation("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
+    // 26+ puts implementation libs on the game classpath directly
+    if (stonecutter.eval(stonecutter.current.version, "<26")) {
+        "additionalRuntimeClasspath"("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
+    }
+    jarJar("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
 }
 
 neoForge {

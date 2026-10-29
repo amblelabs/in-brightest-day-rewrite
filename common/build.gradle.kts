@@ -43,6 +43,10 @@ dependencies {
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
 
     commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
+
+    // voice chat + oath recognition; JNA comes from minecraft
+    compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+    compileOnly("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
 }
 
 // TODO(template): same as buildSrc/.../multiloader-loader.gradle.kts
