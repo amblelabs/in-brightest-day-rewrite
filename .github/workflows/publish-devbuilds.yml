@@ -44,7 +44,7 @@ jobs:
     - name: Publish artifacts
       uses: drtheodor/discord-webhook-upload-action@v0.4
       with:
-        url: ${{ secrets.DEV_BUILDS }}
+        url: ${{ secrets.TEAM_BUILDS }}
         username: mogo doesnt socialize
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDmP1EjlVDygiFMy8_Nxg9Q7M7eZfLKEXyKCRtosnS_J3lTLJMT6lpPCA&s=10'
         
@@ -59,9 +59,9 @@ jobs:
       if: failure()
       uses: drtheodor/discord-webhook-upload-action@v0.4
       with:
-        url: ${{ secrets.DEV_BUILDS }}
-        username: green
-        avatar: 'https://i.imgur.com/uiFqrQh.png'
+        url: ${{ secrets.TEAM_BUILDS }}
+        username: mogo doesnt socialize
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDmP1EjlVDygiFMy8_Nxg9Q7M7eZfLKEXyKCRtosnS_J3lTLJMT6lpPCA&s=10'
         
         message: |
           <:al_error:1513885241339678852> New **In Brightest Day** dev build [**`#${{ github.run_number }}`**](<https://github.com/amblelabs/in-brightest-day-rewrite/actions/runs/${{ github.run_id }}>) **failed** to build! <a:al_explosion:1467652202356150272>
