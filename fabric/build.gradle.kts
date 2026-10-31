@@ -28,6 +28,8 @@ dependencies {
 
     modImplementation("com.terraformersmc:modmenu:${commonMod.dep("modmenu")}")
 
+    commonMod.depOrNull("player_anim")?.let { modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:$it+mc.${commonMod.mc}") }
+
     commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
 

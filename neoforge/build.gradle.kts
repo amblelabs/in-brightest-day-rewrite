@@ -15,6 +15,9 @@ neoForge {
 
 dependencies {
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+    commonMod.depOrNull("player_anim")?.let { implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:$it+mc.${commonMod.mc}") {
+        listOf("io.netty", "org.slf4j", "it.unimi.dsi", "com.google.code.gson", "org.joml").forEach { group -> exclude(group = group) }
+    } }
 
     // bundled; JNA comes from minecraft
     implementation("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }

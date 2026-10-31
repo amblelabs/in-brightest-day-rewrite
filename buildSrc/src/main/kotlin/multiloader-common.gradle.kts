@@ -45,6 +45,7 @@ repositories {
     maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
     maven("https://thedarkcolour.github.io/KotlinForForge/")
     strictMaven("https://maven.maxhenkel.de/repository/public", "HenkelMaven", "de.maxhenkel.voicechat")
+    strictMaven("https://repo.redlance.org/public", "RedlanceMinecraft", "com.zigythebird.playeranim", "org.redlance.common-utils")
 }
 
 tasks {

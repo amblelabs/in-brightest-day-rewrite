@@ -39,6 +39,7 @@
   "depends": {
     "fabricloader": ">=${fabricLoaderVersion}",
     "fabric-api": "*",
+    "player_animation_library": ">=1.2.8",
     "minecraft": "${minecraftVersion}",
     "java": ">=${javaVersion}"
   }

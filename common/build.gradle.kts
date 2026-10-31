@@ -43,6 +43,7 @@ dependencies {
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
 
     commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
+    commonMod.depOrNull("player_anim")?.let { compileOnly("com.zigythebird.playeranim:PlayerAnimationLibCommon:$it+mc.${commonMod.mc}") }
 
     // voice chat + oath recognition; JNA comes from minecraft
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")

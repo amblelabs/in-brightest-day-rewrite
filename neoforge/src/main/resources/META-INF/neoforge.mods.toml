@@ -27,6 +27,12 @@ versionRange = "[${minMinecraftVersion},)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.${ modId }]]
+modId = "player_animation_library"
+type = "required"
+versionRange = "[1.2.8,)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.${ modId }]]
 modId = "voicechat"
 type = "optional"
 versionRange = "*"
