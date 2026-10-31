@@ -24,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -126,12 +127,12 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        /*if (!(stack.getItem() instanceof PowerRingItem)) {
+        if (stack.getItem() == Items.POLISHED_GRANITE) { // TODO make the suitselectorscreen a button or something on the tooltip for the ring
             if (level instanceof ClientLevel) {
                 Minecraft.getInstance().setScreenAndShow(new SuitSelectorScreen(Component.literal("")));
             }
             return InteractionResult.TRY_WITH_EMPTY_HAND;
-        }*/
+        }
         return this.recharge(state, level, pos, player, BrightestDayAttachments.getRing(player), false);
     }
 
