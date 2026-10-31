@@ -45,6 +45,11 @@ public class FabricPlatformHelper implements PlatformHelper {
     }
 
     @Override
+    public boolean canSendToServer(CustomPacketPayload.Type<?> type) {
+        return ClientPlayNetworking.canSend(type);
+    }
+
+    @Override
     public void sendToPlayer(ServerPlayer target, CustomPacketPayload packet) {
         ServerPlayNetworking.send(target, packet);
     }

@@ -1,5 +1,7 @@
 package dev.amble.brightestday;
 
+import dev.amble.brightestday.client.networking.LandingC2SPayload;
+import dev.amble.brightestday.client.networking.LandingS2CPayload;
 import dev.amble.brightestday.client.networking.SetFlightC2SPayload;
 import dev.amble.brightestday.client.networking.UpdateSuitPayload;
 import dev.amble.brightestday.core.BrightestDayCreativeTabs;
@@ -32,9 +34,16 @@ public class BrightestDayFabric implements ModInitializer {
     private void registerNetworking() {
         PayloadTypeRegistry.serverboundPlay().register(UpdateSuitPayload.TYPE, UpdateSuitPayload.STREAM_CODEC);
         PayloadTypeRegistry.serverboundPlay().register(SetFlightC2SPayload.TYPE, SetFlightC2SPayload.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(LandingC2SPayload.TYPE, LandingC2SPayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(LandingS2CPayload.TYPE, LandingS2CPayload.STREAM_CODEC);
+
         ServerPlayNetworking.registerGlobalReceiver(UpdateSuitPayload.TYPE,
                 (payload, ctx) -> UpdateSuitPayload.handle(payload, ctx.player()));
+
         ServerPlayNetworking.registerGlobalReceiver(SetFlightC2SPayload.TYPE,
                 (payload, ctx) -> SetFlightC2SPayload.handle(payload, ctx.player()));
+
+        ServerPlayNetworking.registerGlobalReceiver(LandingC2SPayload.TYPE,
+                (payload, ctx) -> LandingC2SPayload.handle(ctx.player(), payload));
     }
 }

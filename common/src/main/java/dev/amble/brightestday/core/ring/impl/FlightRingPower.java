@@ -148,7 +148,7 @@ public class FlightRingPower extends RingPower<FlightRingPower.Data> {
         Vec3 wish = player.getLookAngle().scale(input.z)
                 .add(left.scale(input.x))
                 .add(0.0, vertical, 0.0);
-        if (/*(boosting || launched) && */wish.lengthSqr() < 1.0E-4) wish = player.getLookAngle();
+        // if ((boosting || launched) && wish.lengthSqr() < 1.0E-4) wish = player.getLookAngle();
 
         Vec3 target;
         double response;

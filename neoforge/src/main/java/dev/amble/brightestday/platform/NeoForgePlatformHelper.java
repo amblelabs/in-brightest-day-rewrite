@@ -4,6 +4,8 @@ import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.BrightestDayNeoForge;
 import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amble.brightestday.platform.services.PlatformHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -43,6 +45,12 @@ public class NeoForgePlatformHelper implements PlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return !FMLLoader.getCurrent().isProduction();
+    }
+
+    @Override
+    public boolean canSendToServer(CustomPacketPayload.Type<?> type) {
+        ClientPacketListener connection = Minecraft.getInstance().getConnection();
+        return connection != null && connection.hasChannel(type);
     }
 
     @Override

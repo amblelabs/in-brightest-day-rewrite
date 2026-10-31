@@ -41,6 +41,8 @@ public interface PlatformHelper {
      */
     boolean isDevelopmentEnvironment();
 
+    boolean canSendToServer(CustomPacketPayload.Type<?> type);
+
     void sendToPlayer(ServerPlayer target, CustomPacketPayload packet);
 
     void sendToAll(Stream<ServerPlayer> targets, CustomPacketPayload packet);

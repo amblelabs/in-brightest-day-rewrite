@@ -9,8 +9,10 @@
     "ServerGamePacketListenerImplMixin"
   ],
   "client": [
+    "client.AbstractClientPlayerMixin",
     "client.AvatarRendererMixin",
     "client.AvatarRenderStateMixin",
+    "client.CameraMixin",
     "client.FirstPersonHandsAndItemsRendererMixin",
     "client.GameRendererHandMixin",
     "client.IrisPipelineMixin",
