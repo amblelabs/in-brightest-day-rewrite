@@ -4,7 +4,72 @@ plugins {
     id("java-library")
 }
 
-version = "${loader}-${commonMod.version}+mc${stonecutterBuild.current.version}"
+object CI {
+    const val REFS_PREFIX = "refs/heads/"
+
+    fun branch(): String? {
+        val githubRef = System.getenv("GITHUB_REF")
+        if (githubRef != null && githubRef.startsWith(REFS_PREFIX)) {
+            return githubRef.substring(REFS_PREFIX.length).replace("/", "-")
+        }
+
+        val gitBranch = System.getenv("GIT_BRANCH")
+        return gitBranch?.replace("/", "-")
+    }
+
+    fun buildNum(): String? {
+        val githubRunNumber = System.getenv("GITHUB_RUN_NUMBER")
+        if (githubRunNumber != null) return githubRunNumber
+
+        val gitCommit = System.getenv("GIT_COMMIT")
+        return if (gitCommit != null && gitCommit.length >= 8) gitCommit.substring(0, 8) else gitCommit
+    }
+}
+
+object Versioning {
+    const val BRANCH_RELEASE = "release"
+    const val BUILD_RELEASE = "release"
+    const val BUILD_LOCAL = "local"
+    const val BUILD = "dev"
+
+    fun getBranch(): String? {
+        val branch = CI.branch()
+        return branch?.takeIf {
+            it != "main" && it != "master"
+                    && it != "trunk" && it != "dev"
+                    && it != BRANCH_RELEASE
+        }
+    }
+
+    fun getBuild(): String? {
+        val branch = CI.branch()
+        if (branch == BRANCH_RELEASE) return null
+        return CI.buildNum()
+    }
+
+    fun getQualifier(): String {
+        val branch = CI.branch() ?: return BUILD_LOCAL
+        return if (branch == BRANCH_RELEASE) BUILD_RELEASE else BUILD
+    }
+}
+
+fun createVer(): String {
+    var qualifier = ""
+
+    Versioning.getBranch()?.let { branch ->
+        qualifier += "$branch-"
+    }
+
+    qualifier += Versioning.getQualifier()
+
+    Versioning.getBuild()?.let { build ->
+        qualifier += ".$build"
+    }
+
+    return "$loader-${commonMod.version}-$qualifier+mc${stonecutterBuild.current.version}"
+}
+
+version = createVer()
 
 base {
     archivesName = commonMod.id
@@ -34,18 +99,14 @@ repositories {
         filter { includeGroup("org.parchmentmc.data") }
     }
     maven("https://www.cursemaven.com")
-    maven("https://api.modrinth.com/maven") {
-        name = "Modrinth"
-        content {
-            includeGroup("maven.modrinth")
-        }
-    }
+    strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
     maven("https://maven.terraformersmc.com/releases/") { name = "TerraformersMC" }
     maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
     maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
     maven("https://thedarkcolour.github.io/KotlinForForge/")
     strictMaven("https://maven.maxhenkel.de/repository/public", "HenkelMaven", "de.maxhenkel.voicechat")
-    strictMaven("https://repo.redlance.org/public", "RedlanceMinecraft", "com.zigythebird.playeranim", "org.redlance.common-utils")
+    strictMaven("https://repo.redlance.org/public", "RedlanceMinecraft",
+        "com.zigythebird.playeranim", "org.redlance.common-utils", "com.zigythebird")
 }
 
 tasks {

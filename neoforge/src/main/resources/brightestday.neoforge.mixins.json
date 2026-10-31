@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.amble.brightestday.mixins",
+  "package": "dev.amblelabs.brightestday.mixins",
   "compatibilityLevel": "JAVA_${javaVersion}",
   "mixins": [],
   "client": [],

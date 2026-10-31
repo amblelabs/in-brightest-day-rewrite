@@ -18,17 +18,17 @@
     "main": [
       {
         "adapter": "kotlin",
-        "value": "dev.amble.brightestday.BrightestDayFabric"
+        "value": "dev.amblelabs.brightestday.BrightestDayFabric"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
-        "value": "dev.amble.brightestday.client.BrightestDayClientFabric"
+        "value": "dev.amblelabs.brightestday.client.BrightestDayClientFabric"
       }
     ],
     "voicechat": [
-      "dev.amble.brightestday.core.comms.CommsVoicePlugin"
+      "dev.amblelabs.brightestday.core.comms.CommsVoicePlugin"
     ]
   },
   "accessWidener": "${modId}.accesswidener",

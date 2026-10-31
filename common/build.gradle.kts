@@ -2,13 +2,14 @@ plugins {
     kotlin("jvm")
     `multiloader-common`
     id("dev.kikugie.loom-back-compat")
-    id("versioning")
 //    id("com.google.devtools.ksp") version "2.3.12" // TODO(template): review
 //    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.14" // TODO(template): review
 }
 
 stonecutter {
-
+    replacements.string(loader!! == "neoforge") {
+        replace("@Environment(EnvType.CLIENT)", "@EnvType(EnvType.CLIENT)")
+    }
 }
 
 //fletchingTable {
@@ -42,12 +43,13 @@ dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
 
-    commonMod.depOrNull("iris")?.let { compileOnly(commonMod.modrinth("iris", it)) { isTransitive = false } }
-    commonMod.depOrNull("player_anim")?.let { compileOnly("com.zigythebird.playeranim:PlayerAnimationLibCommon:$it+mc.${commonMod.mc}") }
+    // FIXME: doodoo
+    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "-fabric")) { isTransitive = false }
+    modImplementation("com.zigythebird.playeranim:PlayerAnimationLibCommon:${commonMod.dep("player_anim")}+mc.${commonMod.mc}")
 
     // voice chat + oath recognition; JNA comes from minecraft
-    compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
-    compileOnly("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
+    implementation("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+    implementation("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
 }
 
 // TODO(template): same as buildSrc/.../multiloader-loader.gradle.kts

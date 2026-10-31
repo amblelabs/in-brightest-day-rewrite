@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm")
     `multiloader-loader`
     id("net.neoforged.moddev") version "2.0.148"
-    id("versioning")
 //    id("com.google.devtools.ksp") version "2.3.12" // TODO(template): review
 //    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.13" // TODO(template): review
 }
@@ -15,16 +14,12 @@ neoForge {
 
 dependencies {
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
-    commonMod.depOrNull("player_anim")?.let { implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:$it+mc.${commonMod.mc}") {
+
+    implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${commonMod.dep("player_anim")}+mc.${commonMod.mc}") {
         listOf("io.netty", "org.slf4j", "it.unimi.dsi", "com.google.code.gson", "org.joml").forEach { group -> exclude(group = group) }
-    } }
+    }
 
     // bundled; JNA comes from minecraft
-    implementation("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
-    // 26+ puts implementation libs on the game classpath directly
-    if (stonecutter.eval(stonecutter.current.version, "<26")) {
-        "additionalRuntimeClasspath"("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
-    }
     jarJar("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
 }
 
