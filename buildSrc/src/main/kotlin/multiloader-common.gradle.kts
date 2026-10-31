@@ -84,12 +84,14 @@ java {
 // TODO(template): review
 repositories {
     mavenCentral()
+
     exclusiveContent {
         forRepository {
             maven("https://repo.spongepowered.org/repository/maven-public") { name = "Sponge" }
         }
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
+
     exclusiveContent {
         forRepositories(
             maven("https://maven.parchmentmc.org") { name = "ParchmentMC" },
@@ -98,15 +100,27 @@ repositories {
         )
         filter { includeGroup("org.parchmentmc.data") }
     }
-    maven("https://www.cursemaven.com")
+
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
+
     maven("https://maven.terraformersmc.com/releases/") { name = "TerraformersMC" }
     maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
     maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
     maven("https://thedarkcolour.github.io/KotlinForForge/")
+
+    // voicechat
     strictMaven("https://maven.maxhenkel.de/repository/public", "HenkelMaven", "de.maxhenkel.voicechat")
+
+    // playeranim
     strictMaven("https://repo.redlance.org/public", "RedlanceMinecraft",
         "com.zigythebird.playeranim", "org.redlance.common-utils", "com.zigythebird")
+
+    // trinkets
+    strictMaven("https://maven.nucleoid.xyz/releases", "Nucleoid", "eu.pb4")
+    strictMaven("https://repo.sleeping.town/", "Sleeping Town", "dev.emi")
+    strictMaven("https://maven.ladysnake.org/releases", "Ladysnake Libs", "org.ladysnake.cardinal-components-api")
+
+    strictMaven("https://maven.theillusivec4.top/", "Illusive Soulworks", "top.theillusivec4.curios")
 }
 
 tasks {

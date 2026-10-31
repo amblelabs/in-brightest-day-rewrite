@@ -22,6 +22,7 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" // TODO(template): review
 }
 
+// FIXME: hacky hack
 gradle.beforeProject {
     buildscript.repositories {
         gradlePluginPortal()

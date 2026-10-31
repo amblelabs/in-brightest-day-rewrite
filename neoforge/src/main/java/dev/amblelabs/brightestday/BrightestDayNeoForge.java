@@ -7,11 +7,17 @@ import dev.amblelabs.brightestday.client.networking.OathS2CPayload;
 import dev.amblelabs.brightestday.client.networking.SetFlightC2SPayload;
 import dev.amblelabs.brightestday.client.networking.UpdateSuitPayload;
 import dev.amblelabs.brightestday.client.networking.VoiceMutedC2SPayload;
+import dev.amblelabs.brightestday.core.items.PowerRingItem;
+import dev.amblelabs.brightestday.platform.Services;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+
+import java.util.List;
 
 @Mod(BrightestDay.MOD_ID)
 public class BrightestDayNeoForge {
@@ -21,13 +27,12 @@ public class BrightestDayNeoForge {
     public BrightestDayNeoForge(IEventBus eventBus) {
         EVENT_BUS = eventBus;
 
-        // This method is invoked by the NeoForge mod loader when it is ready
-        // to load your mod. You can access NeoForge and Common code in this
-        // project.
-
-        // Use NeoForge to bootstrap the Common mod.
         BrightestDay.init();
         eventBus.addListener(RegisterPayloadHandlersEvent.class, BrightestDayNeoForge::registerPayloads);
+
+        Services.DISCOVERY.addDiscoverer(player -> CuriosApi.getCuriosInventory(player).map(handler ->
+                handler.findCurios(stack -> stack.getItem() instanceof PowerRingItem)
+                        .stream().map(SlotResult::stack).toList()).orElseGet(List::of));
     }
 
     private static void registerPayloads(RegisterPayloadHandlersEvent event) {

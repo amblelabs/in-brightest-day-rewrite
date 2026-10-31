@@ -9,7 +9,11 @@ import dev.amblelabs.brightestday.client.networking.UpdateSuitPayload;
 import dev.amblelabs.brightestday.client.networking.VoiceMutedC2SPayload;
 import dev.amblelabs.brightestday.core.BrightestDayCreativeTabs;
 import dev.amblelabs.brightestday.core.BrightestDayRegistries;
+import dev.amblelabs.brightestday.core.items.PowerRingItem;
 import dev.amblelabs.brightestday.core.suits.Suit;
+import dev.amblelabs.brightestday.platform.Services;
+import eu.pb4.trinkets.api.TrinketSlotAccess;
+import eu.pb4.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
@@ -25,6 +29,10 @@ public class BrightestDayFabric implements ModInitializer {
         registerNetworking();
         CreativeModeTabEvents.modifyOutputEvent(BrightestDayCreativeTabs.MAIN.unwrapKey().orElseThrow())
                 .register(entries -> BrightestDayCreativeTabs.fillTab(BrightestDayCreativeTabs.MAIN.unwrapKey().orElseThrow(), entries::accept));
+
+        Services.DISCOVERY.addDiscoverer(player -> TrinketsApi.getAttachment(player)
+                .equipped(stack -> stack.getItem() instanceof PowerRingItem, false)
+                .stream().map(TrinketSlotAccess::get).toList());
     }
 
     private void registerDynamicRegistries() {

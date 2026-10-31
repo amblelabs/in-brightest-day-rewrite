@@ -15,12 +15,20 @@ neoForge {
 dependencies {
     compileOnly("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
 
+    // FIXME only for neoforge?
     implementation("com.zigythebird.playeranim:PlayerAnimationLibNeo:${commonMod.dep("player_anim")}+mc.${commonMod.mc}") {
-        listOf("io.netty", "org.slf4j", "it.unimi.dsi", "com.google.code.gson", "org.joml").forEach { group -> exclude(group = group) }
+        exclude("io.netty")
+        exclude("org.slf4j")
+        exclude("it.unimi.dsi")
+        exclude("com.google.code.gson")
+        exclude("org.joml")
     }
 
     // bundled; JNA comes from minecraft
     jarJar("com.alphacephei:vosk:${commonMod.dep("vosk")}") { exclude(group = "net.java.dev.jna") }
+
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${commonMod.dep("curios")}+${commonMod.mc}:api")
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${commonMod.dep("curios")}+${commonMod.mc}")
 }
 
 neoForge {

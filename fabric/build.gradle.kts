@@ -29,8 +29,14 @@ dependencies {
 
     modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${commonMod.dep("player_anim")}+mc.${commonMod.mc}")
 
-    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "-fabric")) { isTransitive = false }
+    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "+${commonMod.mc}-fabric"))
     implementation("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
+
+    if (sc.current.parsed >= "26") {
+        modImplementation("eu.pb4:trinkets:${commonMod.dep("trinkets")}+${commonMod.mc}")
+    } else {
+        modImplementation("dev.emi:trinkets:${commonMod.dep("trinkets")}")
+    }
 
     include("com.alphacephei:vosk:${commonMod.dep("vosk")}")
 }

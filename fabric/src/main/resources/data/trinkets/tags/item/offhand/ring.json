@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "brightestday:green_power_ring",
+    "brightestday:yellow_power_ring",
+    "brightestday:orange_power_ring",
+    "brightestday:red_power_ring",
+    "brightestday:star_sapphire_power_ring",
+    "brightestday:indigo_power_ring",
+    "brightestday:blue_power_ring",
+    "brightestday:white_power_ring",
+    "brightestday:black_power_ring"
+  ]
+}

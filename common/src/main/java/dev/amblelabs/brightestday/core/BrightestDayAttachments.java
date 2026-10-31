@@ -86,10 +86,19 @@ public class BrightestDayAttachments {
         COLOR_TWEAK.set(player, tweak.clamped());
     }*/
 
+    /**
+     * @return {@link ItemStack#EMPTY} if not found.
+     */
+    @Deprecated(forRemoval = true) // TODO: move this to PowerRingItem maybe?
     public static ItemStack getRing(Player player) {
+        for (ItemStack stack : Services.DISCOVERY.collectItems(player)) {
+            if (stack.getItem() instanceof PowerRingItem) return stack;
+        }
+
         return RING.get(player);
     }
 
+    @Deprecated(forRemoval = true)
     public static void setRing(Player player, ItemStack ring) {
         RING.set(player, ring.isEmpty() ? ItemStack.EMPTY : ring.copy());
     }

@@ -2,6 +2,7 @@ package dev.amblelabs.brightestday.platform;
 
 import dev.amblelabs.brightestday.BrightestDay;
 import dev.amblelabs.brightestday.platform.services.EventHelper;
+import dev.amblelabs.brightestday.platform.services.ItemDiscoveryHelper;
 import dev.amblelabs.brightestday.platform.services.PlatformHelper;
 
 import java.util.ServiceLoader;
@@ -9,7 +10,9 @@ import java.util.ServiceLoader;
 // Service loaders are a built-in Java feature that allow us to locate implementations of an interface that vary from one
 // environment to another. In the context of MultiLoader we use this feature to access a mock API in the common code that
 // is swapped out for the platform specific implementation at runtime.
-public class Services {
+public final class Services {
+
+    private Services() { }
 
     // In this example we provide a platform helper which provides information about what platform the mod is running on.
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the mod-loader if another
@@ -17,6 +20,8 @@ public class Services {
     public static final PlatformHelper PLATFORM = load(PlatformHelper.class);
 
     public static final EventHelper EVENTS = load(EventHelper.class);
+
+    public static final ItemDiscoveryHelper DISCOVERY = new ItemDiscoveryHelper();
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

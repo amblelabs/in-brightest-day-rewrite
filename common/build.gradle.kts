@@ -43,8 +43,7 @@ dependencies {
     compileOnly("org.spongepowered:mixin:0.8.5")
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
 
-    // FIXME: doodoo
-    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "-fabric")) { isTransitive = false }
+    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "+${commonMod.mc}-fabric"))
     modImplementation("com.zigythebird.playeranim:PlayerAnimationLibCommon:${commonMod.dep("player_anim")}+mc.${commonMod.mc}")
 
     // voice chat + oath recognition; JNA comes from minecraft
