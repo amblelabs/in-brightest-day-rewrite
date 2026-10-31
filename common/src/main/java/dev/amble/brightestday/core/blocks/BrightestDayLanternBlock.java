@@ -6,12 +6,14 @@ import dev.amble.brightestday.core.BrightestDayComponents;
 import dev.amble.brightestday.core.blockentities.LanternBlockEntity;
 import dev.amble.brightestday.core.items.PowerRingItem;
 import dev.amble.brightestday.core.lanterns.LanternCorps;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -203,7 +205,7 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
         if (PowerRingItem.getRingPower(ring) >= BrightestDayComponents.MAX_POWER) return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
-        //if (player instanceof ServerPlayer server && LanternRitual.begin(server, pos, state, this.corps)) return InteractionResult.SUCCESS_SERVER;
+        if (player instanceof ServerPlayer server && LanternRitual.begin(server, pos, state, this.corps)) return InteractionResult.SUCCESS_SERVER;
         complete(level, pos, player, ring, slotted, true);
         return InteractionResult.SUCCESS_SERVER;
     }
@@ -221,11 +223,11 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
         //if (level instanceof ServerLevel serverLevel) RingLoyalty.bind(ring, serverLevel, pos);
         if (slotted) BrightestDayAttachments.setRing(player, ring);
 
-        //if (announce) {
-        //    player.sendSystemMessage(Component.translatable(this.corps.oathKey())
-        //            .withStyle(ChatFormatting.BOLD)
-        //            .withColor(this.corps.color()));
-        //}
+        if (announce) {
+            player.sendSystemMessage(Component.translatable(this.corps.oathKey())
+                    .withStyle(ChatFormatting.BOLD)
+                    .withColor(this.corps.color()));
+        }
         level.playSound(null, pos, SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 }

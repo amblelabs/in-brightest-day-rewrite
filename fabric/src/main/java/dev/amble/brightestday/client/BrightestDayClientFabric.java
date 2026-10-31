@@ -1,7 +1,11 @@
 package dev.amble.brightestday.client;
 
+import dev.amble.brightestday.client.effects.LanternChargeAnimations;
 import dev.amble.brightestday.client.flight.FlightAnimator;
+import dev.amble.brightestday.client.hud.OathHud;
 import dev.amble.brightestday.client.networking.LandingS2CPayload;
+import dev.amble.brightestday.client.networking.LanternRitualS2CPayload;
+import dev.amble.brightestday.client.networking.OathS2CPayload;
 import dev.amble.brightestday.client.render.FrostedGlass;
 import dev.amble.brightestday.client.render.LanternBlockEntityRenderer;
 import dev.amble.brightestday.client.render.ShaderOverlay;
@@ -9,7 +13,6 @@ import dev.amble.brightestday.client.render.SlottedRingLayer;
 import dev.amble.brightestday.client.util.FabricSuitRenderCallback;
 import dev.amble.brightestday.core.BrightestDayBlockEntities;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback;
@@ -22,7 +25,8 @@ public class BrightestDayClientFabric implements ClientModInitializer {
         BrightestDayClient.init();
 
         ClientPlayNetworking.registerGlobalReceiver(LandingS2CPayload.TYPE, (payload, context) -> FlightAnimator.handleLandingRelay(payload));
-        ClientTickEvents.END_CLIENT_TICK.register(BrightestDayClient::tick);
+        ClientPlayNetworking.registerGlobalReceiver(OathS2CPayload.TYPE, (payload, context) -> OathHud.handle(payload));
+        ClientPlayNetworking.registerGlobalReceiver(LanternRitualS2CPayload.TYPE, (payload, context) -> LanternChargeAnimations.handleRitual(payload));
 
         LevelRenderEvents.START_MAIN.register(context -> ShaderOverlay.startMain());
         LevelRenderEvents.END_MAIN.register(context -> FrostedGlass.endMain());

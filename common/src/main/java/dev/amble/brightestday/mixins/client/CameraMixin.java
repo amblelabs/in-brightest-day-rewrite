@@ -1,11 +1,13 @@
 package dev.amble.brightestday.mixins.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import dev.amble.brightestday.client.effects.LanternChargeAnimations;
 import dev.amble.brightestday.client.flight.FlightAnimator;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
@@ -32,6 +34,18 @@ public abstract class CameraMixin {
     @Shadow @Final private Vector3f up;
     @Shadow @Final private Vector3f left;
     @Shadow private int matrixPropertiesDirty;
+    @Shadow private Vec3 position;
+    @Shadow private boolean detached;
+
+    @Shadow
+    protected abstract void setPosition(Vec3 position);
+
+    @Inject(method = "alignWithEntity", at = @At("TAIL"))
+    private void brightestday$followRitualHead(float partialTicks, CallbackInfo ci) {
+        if (this.detached || !(this.entity instanceof Player player) || LanternChargeAnimations.ritualYaw(player) == null) return;
+        Vec3 offset = LanternChargeAnimations.headOffset(player);
+        if (offset.lengthSqr() > 1.0E-6) this.setPosition(this.position.add(offset));
+    }
 
     @ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.5F))
     private float brightestday$raiseFovCapWhileFlying(float max) {

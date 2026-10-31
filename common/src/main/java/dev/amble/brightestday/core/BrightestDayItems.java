@@ -1,6 +1,7 @@
 package dev.amble.brightestday.core;
 
 import dev.amble.brightestday.BrightestDay;
+import dev.amble.brightestday.core.items.LanternBlockItem;
 import dev.amble.brightestday.core.items.PowerRingItem;
 import dev.amble.brightestday.core.lanterns.LanternCorps;
 import dev.amble.brightestday.platform.Services;
@@ -114,7 +115,7 @@ public class BrightestDayItems {
 
     private static Holder<Item> blockItem(String name, Holder<Block> block) {
         return item(name, properties -> {
-            BlockItem item = new BlockItem(block.value(), properties.useBlockDescriptionPrefix());
+            BlockItem item = new LanternBlockItem(block.value(), properties.useBlockDescriptionPrefix());
             item.registerBlocks(Item.BY_BLOCK, item);
             return item;
         });

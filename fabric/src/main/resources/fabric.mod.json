@@ -26,6 +26,9 @@
         "adapter": "kotlin",
         "value": "dev.amble.brightestday.client.BrightestDayClientFabric"
       }
+    ],
+    "voicechat": [
+      "dev.amble.brightestday.core.comms.CommsVoicePlugin"
     ]
   },
   "accessWidener": "${modId}.accesswidener",

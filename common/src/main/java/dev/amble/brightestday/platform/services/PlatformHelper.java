@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -40,6 +41,8 @@ public interface PlatformHelper {
      * @return {@code true} if in a development environment, {@code false} otherwise.
      */
     boolean isDevelopmentEnvironment();
+
+    Path getConfigDir();
 
     boolean canSendToServer(CustomPacketPayload.Type<?> type);
 

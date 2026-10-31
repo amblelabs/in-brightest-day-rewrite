@@ -1,5 +1,6 @@
 package dev.amble.brightestday.mixins.client;
 
+import dev.amble.brightestday.client.render.renderstates.ChargeRenderState;
 import dev.amble.brightestday.client.render.renderstates.FlightRenderState;
 import dev.amble.brightestday.client.render.renderstates.RingRenderState;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
@@ -10,12 +11,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(AvatarRenderState.class)
-public class AvatarRenderStateMixin implements RingRenderState, FlightRenderState {
+public class AvatarRenderStateMixin implements RingRenderState, FlightRenderState, ChargeRenderState {
     @Unique
     private @Nullable ItemStackRenderState brightestday$ring;
 
     @Unique
     private Vec3 brightestday$diveOffset = Vec3.ZERO;
+
+    @Unique
+    private boolean brightestday$chargeAnimating;
 
     @Override
     public @Nullable ItemStackRenderState brightestday$getRing() {
@@ -35,5 +39,15 @@ public class AvatarRenderStateMixin implements RingRenderState, FlightRenderStat
     @Override
     public void brightestday$setDiveOffset(Vec3 offset) {
         this.brightestday$diveOffset = offset;
+    }
+
+    @Override
+    public boolean brightestday$isChargeAnimating() {
+        return this.brightestday$chargeAnimating;
+    }
+
+    @Override
+    public void brightestday$setChargeAnimating(boolean animating) {
+        this.brightestday$chargeAnimating = animating;
     }
 }

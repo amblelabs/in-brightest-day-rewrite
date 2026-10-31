@@ -5,8 +5,14 @@ import dev.amble.brightestday.core.BrightestDayBlockEntities;
 import dev.amble.brightestday.core.BrightestDayBlocks;
 import dev.amble.brightestday.core.BrightestDayCreativeTabs;
 import dev.amble.brightestday.core.BrightestDayItems;
+import dev.amble.brightestday.core.blocks.LanternRitual;
+import dev.amble.brightestday.core.comms.Comms;
+import dev.amble.brightestday.core.oath.OathCharge;
+import dev.amble.brightestday.core.oath.VocalAnswer;
 import dev.amble.brightestday.core.ring.RingPowerRegistry;
+import dev.amble.brightestday.core.ring.RingPowerTicker;
 import dev.amble.brightestday.core.ring.impl.FlightRingPower;
+import dev.amble.brightestday.platform.Services;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,5 +37,10 @@ public class BrightestDay {
         BrightestDayItems.register();
         BrightestDayCreativeTabs.register();
         RingPowerRegistry.init();
+        Comms.init();
+        OathCharge.init();
+        VocalAnswer.init();
+        LanternRitual.init();
+        Services.EVENTS.onServerTick(RingPowerTicker::tick);
     }
 }
