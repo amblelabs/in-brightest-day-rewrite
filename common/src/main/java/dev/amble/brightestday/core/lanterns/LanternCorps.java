@@ -2,6 +2,7 @@ package dev.amble.brightestday.core.lanterns;
 
 import com.mojang.serialization.Codec;
 import dev.amble.brightestday.BrightestDay;
+import dev.amble.brightestday.core.ring.RingPowerCategory;
 import dev.amble.brightestday.core.util.Translatable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
@@ -53,17 +54,17 @@ public enum LanternCorps implements StringRepresentable, Translatable {
         return this.ringPower;
     }
 
-    // public boolean canUse(RingPowerCategory category) {
-    //     return category != RingPowerCategory.CONSTRUCT || this.constructs;
-    // }
+    public boolean canUse(RingPowerCategory category) {
+        return category != RingPowerCategory.CONSTRUCT || this.constructs;
+    }
 
     public Component displayName() {
         return Component.translatable(this.getTranslationKey());
     }
 
-    // public String oathKey() {
-    //     return BrightestDay.MOD_ID + ".oath." + this.name;
-    // }
+    public String oathKey() {
+        return BrightestDay.MOD_ID + ".oath." + this.name;
+    }
 
     public String emotion() {
         return this.emotion;

@@ -53,6 +53,8 @@ public interface PlatformHelper {
 
     void sendToServer(CustomPacketPayload packet);
 
+    <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key);
+
     <T> Registrar<T> createRegistrar(Registry<T> registry);
     <T> Registrar<T> createRegistrar(ResourceKey<? extends Registry<T>> registry);
 

@@ -2,23 +2,37 @@ package dev.amble.brightestday.core;
 
 import com.mojang.serialization.Codec;
 import dev.amble.brightestday.BrightestDay;
+import dev.amble.brightestday.core.items.PowerRingItem;
+import dev.amble.brightestday.core.lanterns.LanternCorps;
+import dev.amble.brightestday.core.ring.RingPower;
+import dev.amble.brightestday.core.ring.RingPowerCategory;
+import dev.amble.brightestday.core.ring.RingPowerInstance;
+import dev.amble.brightestday.core.ring.RingPowerRegistry;
 import dev.amble.brightestday.platform.Services;
 import dev.amble.brightestday.platform.attachment.Attachment;
 import dev.amble.brightestday.platform.attachment.AttachmentBuilder;
 import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 // TODO implement all this nonsense
 public class BrightestDayAttachments {
     private static final AttachmentRegistrar REGISTRAR = Services.PLATFORM.createAttachmentRegistrar();
 
-    /*public static final Attachment<List<RingPowerInstance<?>>> POWERS = REGISTRAR.register("powers",
+    public static final Attachment<List<RingPowerInstance<?>>> POWERS = REGISTRAR.register("powers",
             AttachmentBuilder.<List<RingPowerInstance<?>>>builder(List::of)
                     .persistent(RingPowerInstance.CODEC.listOf())
                     .copyOnDeath()
-                    .sync(RingPowerInstance.LIST_STREAM_CODEC));*/
+                    .sync(RingPowerInstance.LIST_STREAM_CODEC));
 
     public static final Attachment<ItemStack> RING = REGISTRAR.register("ring",
             AttachmentBuilder.builder(() -> ItemStack.EMPTY)
@@ -82,7 +96,7 @@ public class BrightestDayAttachments {
         RING.set(player, ring.isEmpty() ? ItemStack.EMPTY : ring.copy());
     }
 
-    /*public static List<RingPowerInstance<?>> get(Player player) {
+    public static List<RingPowerInstance<?>> get(Player player) {
         return POWERS.get(player);
     }
 
@@ -123,20 +137,20 @@ public class BrightestDayAttachments {
         List<RingPowerInstance<?>> current = get(player);
         List<RingPower<?>> available = corps == null
                 ? List.of()
-                : RingPowerRegistry.forCorps(corps, CorpsSynergy.borrowsWill(player) ? LanternCorps.GREEN : null, CorpsMimicry.mimicked(player, corps));
+                : RingPowerRegistry.forCorps(corps, null/*CorpsSynergy.borrowsWill(player) ? LanternCorps.GREEN : null*/, Set.of()/*CorpsMimicry.mimicked(player, corps)*/);
         ItemStack wornRing = PowerRingItem.getWornRing(player);
-        boolean constructRing = ConstructRings.isConstruct(wornRing);
-        if (corps == LanternCorps.WHITE && wornRing.has(BrightestDayComponents.FUSED_WHITE)) available = WhiteFusion.arsenal();
-        if (corps == LanternCorps.RED && RedBlood.flowing(player)) {
+        // boolean constructRing = ConstructRings.isConstruct(wornRing);
+        // if (corps == LanternCorps.WHITE && wornRing.has(BrightestDayComponents.FUSED_WHITE)) available = WhiteFusion.arsenal();
+        /*if (corps == LanternCorps.RED && RedBlood.flowing(player)) {
             List<RingPower<?>> lent = new ArrayList<>(available);
-            for (RingPower<?> power : RedBlood.borrowed()) if (!lent.contains(power)) lent.add(power);
+            //for (RingPower<?> power : RedBlood.borrowed()) if (!lent.contains(power)) lent.add(power);
             available = List.copyOf(lent);
-        }
-        if (corps != null && CentralPowerBattery.required(corps) && !CentralPowerBattery.active(player.level().getServer(), corps) && !CentralPowerBattery.severed(player.level().getServer(), corps)) {
+        }*/
+        /*if (corps != null && CentralPowerBattery.required(corps) && !CentralPowerBattery.active(player.level().getServer(), corps) && !CentralPowerBattery.severed(player.level().getServer(), corps)) {
             available = List.of();
             if (player.tickCount % 200 == 0) player.sendOverlayMessage(Component.translatable("message.brightestday.battery.dormant").withColor(corps.color()));
-        }
-        if (corps != null) {
+        }*/
+        /*if (corps != null) {
             Set<RingPower<?>> locked = constructRing ? RingRanks.locked(player, corps, 1) : RingRanks.locked(player, corps);
             if (constructRing) available = available.stream().filter(power -> power != RingPowerRegistry.CONSTRUCT_RING && power != RingPowerRegistry.RING_COMPASS).toList();
             if (!locked.isEmpty()) available = available.stream().filter(power -> !locked.contains(power)).toList();
@@ -144,7 +158,7 @@ public class BrightestDayAttachments {
             if (!Comms.available()) available = available.stream().filter(power -> power != RingPowerRegistry.COMMS).toList();
             if (PowerRingItem.isDormant(PowerRingItem.getWornRing(player))) available = available.stream().filter(power -> power == RingPowerRegistry.ARMED).toList();
             if (RingSync.locked(player)) available = available.stream().filter(power -> power == RingPowerRegistry.ARMED || power == RingPowerRegistry.COMMS || power == RingPowerRegistry.RING_COMPASS).toList();
-        }
+        }*/
 
         if (current.size() == available.size()) {
             boolean unchanged = true;
@@ -181,7 +195,7 @@ public class BrightestDayAttachments {
 
     private static <D> void revoked(ServerPlayer player, RingPowerInstance<D> instance) {
         instance.power().onRevoked(player, instance.data());
-    }*/
+    }
 
     public static void init() {
         REGISTRAR.registerAll();

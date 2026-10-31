@@ -4,6 +4,8 @@ import dev.amble.brightestday.BrightestDay;
 import dev.amble.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amble.brightestday.platform.services.PlatformHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
@@ -71,6 +73,11 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public void sendToServer(CustomPacketPayload packet) {
         ClientPlayNetworking.send(packet);
+    }
+
+    @Override
+    public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key) {
+        return FabricRegistryBuilder.create(key).attribute(RegistryAttribute.SYNCED).buildAndRegister();
     }
 
     @Override

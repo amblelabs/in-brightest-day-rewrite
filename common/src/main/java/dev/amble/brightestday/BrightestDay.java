@@ -5,6 +5,8 @@ import dev.amble.brightestday.core.BrightestDayBlockEntities;
 import dev.amble.brightestday.core.BrightestDayBlocks;
 import dev.amble.brightestday.core.BrightestDayCreativeTabs;
 import dev.amble.brightestday.core.BrightestDayItems;
+import dev.amble.brightestday.core.ring.RingPowerRegistry;
+import dev.amble.brightestday.core.ring.impl.FlightRingPower;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,5 +30,6 @@ public class BrightestDay {
         BrightestDayBlockEntities.register();
         BrightestDayItems.register();
         BrightestDayCreativeTabs.register();
+        RingPowerRegistry.init();
     }
 }

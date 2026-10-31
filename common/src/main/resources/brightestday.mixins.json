@@ -4,7 +4,10 @@
   "package": "dev.amble.brightestday.mixins",
   "refmap": "${modId}.refmap.json",
   "compatibilityLevel": "JAVA_${javaVersion}",
-  "mixins": [],
+  "mixins": [
+    "PlayerMixin",
+    "ServerGamePacketListenerImplMixin"
+  ],
   "client": [
     "client.AvatarRendererMixin",
     "client.AvatarRenderStateMixin",
@@ -12,6 +15,7 @@
     "client.GameRendererHandMixin",
     "client.IrisPipelineMixin",
     "client.LevelRendererFrostMixin",
+    "client.LocalPlayerMixin",
     "client.PreparedFrameAccessor",
     "client.SubmitNodeCollectionMixin"
   ],

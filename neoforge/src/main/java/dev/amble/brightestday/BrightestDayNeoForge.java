@@ -1,7 +1,10 @@
 package dev.amble.brightestday;
 
+import dev.amble.brightestday.core.ring.RingPowerTicker;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 @Mod(BrightestDay.MOD_ID)
 public class BrightestDayNeoForge {
@@ -17,5 +20,6 @@ public class BrightestDayNeoForge {
 
         // Use NeoForge to bootstrap the Common mod.
         BrightestDay.init();
+        NeoForge.EVENT_BUS.addListener(ServerTickEvent.Post.class, event -> RingPowerTicker.tick(event.getServer()));
     }
 }

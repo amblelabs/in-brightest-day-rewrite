@@ -124,13 +124,13 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!(stack.getItem() instanceof PowerRingItem)) {
+        /*if (!(stack.getItem() instanceof PowerRingItem)) {
             if (level instanceof ClientLevel) {
                 Minecraft.getInstance().setScreenAndShow(new SuitSelectorScreen(Component.literal("")));
             }
             return InteractionResult.TRY_WITH_EMPTY_HAND;
-        }
-        return this.recharge(state, level, pos, player, stack, false);
+        }*/
+        return this.recharge(state, level, pos, player, BrightestDayAttachments.getRing(player), false);
     }
 
     @Override
@@ -178,6 +178,7 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
         //     return InteractionResult.FAIL;
         // }
 
+        System.out.println(PowerRingItem.getCorps(ring));
         if (PowerRingItem.getCorps(ring).orElse(null) != this.corps) {
             if (!level.isClientSide()) {
                 player.sendOverlayMessage(Component.translatable("message.brightestday.wrong_lantern", this.corps.displayName())
