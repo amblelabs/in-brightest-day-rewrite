@@ -29,7 +29,7 @@ dependencies {
 
     modImplementation("com.zigythebird.playeranim:PlayerAnimationLibFabric:${commonMod.dep("player_anim")}+mc.${commonMod.mc}")
 
-    modImplementation(commonMod.modrinth("iris", commonMod.dep("iris") + "+${commonMod.mc}-fabric"))
+    modCompileOnly(commonMod.modrinth("iris", commonMod.dep("iris") + "+${commonMod.mc}-fabric"))
     implementation("de.maxhenkel.voicechat:voicechat-api:${commonMod.dep("voicechat_api")}")
 
     if (sc.current.parsed >= "26") {
