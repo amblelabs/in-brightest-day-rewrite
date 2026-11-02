@@ -6,6 +6,7 @@ import dev.amblelabs.lib.util.CaseUtil;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +28,14 @@ public class JnaHelper {
                 ? null : JnaClass.Mapper.SNAKE_CASE;
 
         for (Method method : clazz.getMethods()) {
+            if (method.isDefault() || Modifier.isStatic(method.getModifiers())) continue;
             JnaFunction func = method.getAnnotation(JnaFunction.class);
-            if (func == null) continue;
+            if (func == null && defMapper == null) continue;
 
             String name;
-            JnaFunction.Mapper mapper = func.mapper() == JnaFunction.Mapper.DEFAULT ? null : func.mapper();
+            JnaFunction.Mapper mapper = func == null || func.mapper() == JnaFunction.Mapper.DEFAULT ? null : func.mapper();
 
-            if (func.value().isEmpty()) {
+            if (func == null || func.value().isEmpty()) {
                 if (mapper == JnaFunction.Mapper.NONE) continue;
 
                 mapper = mapper == null ? (defMapper != null ? defMapper.asFunc() : null) : mapper;

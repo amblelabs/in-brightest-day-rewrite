@@ -132,7 +132,7 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
             if (level instanceof ClientLevel) {
                 Minecraft.getInstance().setScreenAndShow(new SuitSelectorScreen(Component.literal("")));
             }
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return InteractionResult.CONSUME;
         }
         return this.recharge(state, level, pos, player, BrightestDayAttachments.getRing(player), false);
     }

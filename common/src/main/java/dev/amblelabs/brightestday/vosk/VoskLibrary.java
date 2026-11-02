@@ -5,6 +5,7 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import dev.amblelabs.lib.jna.JnaClass;
+import dev.amblelabs.lib.jna.JnaFunction;
 import dev.amblelabs.lib.jna.JnaHelper;
 
 import java.util.Map;
@@ -19,12 +20,16 @@ public interface VoskLibrary extends Library {
 
     Pointer voskRecognizerNewGrm(Pointer model, float sampleRate, String grammar);
 
+    @JnaFunction("vosk_recognizer_accept_waveform_s")
     boolean voskAcceptWaveform(Pointer recognizer, short[] data, int length);
 
+    @JnaFunction("vosk_recognizer_result")
     String voskResult(Pointer recognizer);
 
+    @JnaFunction("vosk_recognizer_partial_result")
     String voskPartialResult(Pointer recognizer);
 
+    @JnaFunction("vosk_recognizer_free")
     void voskFree(Pointer recognizer);
 
     // TODO if this is dumb just nuke it i just dont like the c binding camelcase stuff in java
