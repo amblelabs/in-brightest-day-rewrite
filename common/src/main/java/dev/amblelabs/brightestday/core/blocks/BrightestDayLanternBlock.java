@@ -85,7 +85,7 @@ public class BrightestDayLanternBlock extends BaseEntityBlock implements SimpleW
         ItemStack ring = BrightestDayAttachments.getRing(player);
         if (PowerRingItem.getCorps(ring).orElse(null) != this.corps) return;
         // RingLoyalty.bind(ring, serverLevel, pos);
-        BrightestDayAttachments.setRing(player, ring);
+        // BrightestDayAttachments.setRing(player, ring);
     }
 
     protected @NonNull FluidState getFluidState(final BlockState state) {

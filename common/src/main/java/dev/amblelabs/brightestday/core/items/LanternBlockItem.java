@@ -142,7 +142,7 @@ public class LanternBlockItem extends BlockItem {
             progress = (float) elapsed / (charge - INSERT_TICKS);
             ItemStack ring = PowerRingItem.getWornRing(player);
             PowerRingItem.chargeRing(ring, Mth.ceil((float) BrightestDayComponents.MAX_POWER / (charge - INSERT_TICKS)));
-            if (ring == BrightestDayAttachments.getRing(player)) BrightestDayAttachments.setRing(player, ring);
+            // if (ring == BrightestDayAttachments.getRing(player)) BrightestDayAttachments.setRing(player, ring);
         }
 
         if (elapsed % PARTICLE_INTERVAL == 0) {

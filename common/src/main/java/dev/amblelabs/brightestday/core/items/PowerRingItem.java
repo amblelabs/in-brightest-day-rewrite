@@ -86,53 +86,32 @@ public class PowerRingItem extends Item {
         return (float) getRingPower(ring) / BrightestDayComponents.MAX_POWER;
     }
 
-    private record Source(ItemStack ring, Player owner) {
-        void save() {
-            if (this.ring == BrightestDayAttachments.getRing(this.owner)) BrightestDayAttachments.setRing(this.owner, this.ring);
-        }
-    }
-
-    private static Source source(Player player) {
-        ItemStack ring = getWornRing(player);
-        // if (player instanceof ServerPlayer server && ConstructRings.isConstruct(ring)) {
-        //     ServerPlayer creator = ConstructRings.creator(server, ring);
-        //     return creator == null ? new Source(ItemStack.EMPTY, player) : new Source(BrightestDayAttachments.getRing(creator), creator);
-        // }
-        return new Source(ring, player);
-    }
-
     public static void refund(Player player, int amount) {
         // amount = CorpsSynergy.scaleCost(player, amount);
-        Source source = source(player);
-        if (source.ring().isEmpty() || player.hasInfiniteMaterials()) return;
+        if (BrightestDayAttachments.getRing(player).isEmpty() || player.hasInfiniteMaterials()) return;
 
-        chargeRing(source.ring(), amount);
-        source.save();
+        chargeRing(BrightestDayAttachments.getRing(player), amount);
     }
 
     public static boolean hasCharge(Player player) {
         // if (OrangeDuels.dueling(player)) return false;
-        return player.hasInfiniteMaterials() || player.isCreative() || getRingPower(source(player).ring()) > 0;
+        return player.hasInfiniteMaterials() || player.isCreative() || getRingPower(BrightestDayAttachments.getRing(player)) > 0;
     }
 
     public static boolean drainWorn(Player player, int amount) {
         // amount = CorpsSynergy.scaleCost(player, amount);
-        Source source = source(player);
-        if (source.ring().isEmpty()) return false;
+        if (BrightestDayAttachments.getRing(player).isEmpty()) return false;
 
-        boolean paid = getRingPower(source.ring()) >= amount;
-        drainRing(source.ring(), amount);
-        source.save();
+        boolean paid = getRingPower(BrightestDayAttachments.getRing(player)) >= amount;
+        drainRing(BrightestDayAttachments.getRing(player), amount);
         return paid;
     }
 
     public static boolean consumeCharge(Player player, int amount) {
         // amount = CorpsSynergy.scaleCost(player, amount);
-        Source source = source(player);
-        if (source.ring().isEmpty() || getRingPower(source.ring()) < amount) return false;
+        if (BrightestDayAttachments.getRing(player).isEmpty() || getRingPower(BrightestDayAttachments.getRing(player)) < amount) return false;
 
-        drainRing(source.ring(), amount);
-        source.save();
+        drainRing(BrightestDayAttachments.getRing(player), amount);
         return true;
     }
 

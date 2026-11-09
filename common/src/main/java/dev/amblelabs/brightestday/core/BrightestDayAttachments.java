@@ -11,6 +11,7 @@ import dev.amblelabs.brightestday.platform.Services;
 import dev.amblelabs.brightestday.platform.attachment.Attachment;
 import dev.amblelabs.brightestday.platform.attachment.AttachmentBuilder;
 import dev.amblelabs.brightestday.platform.attachment.AttachmentRegistrar;
+import dev.amblelabs.brightestday.platform.services.PlatformHelper;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -95,12 +96,12 @@ public class BrightestDayAttachments {
             if (stack.getItem() instanceof PowerRingItem) return stack;
         }
 
-        return RING.get(player);
+        return ItemStack.EMPTY;
     }
 
     @Deprecated(forRemoval = true)
     public static void setRing(Player player, ItemStack ring) {
-        RING.set(player, ring.isEmpty() ? ItemStack.EMPTY : ring.copy());
+        Services.PLATFORM.setRing(player, ring); // TODO useless
     }
 
     public static List<RingPowerInstance<?>> get(Player player) {

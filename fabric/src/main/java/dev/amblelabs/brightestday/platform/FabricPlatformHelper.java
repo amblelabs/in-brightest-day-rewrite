@@ -1,8 +1,10 @@
 package dev.amblelabs.brightestday.platform;
 
 import dev.amblelabs.brightestday.BrightestDay;
+import dev.amblelabs.brightestday.core.items.PowerRingItem;
 import dev.amblelabs.brightestday.platform.attachment.AttachmentRegistrar;
 import dev.amblelabs.brightestday.platform.services.PlatformHelper;
+import eu.pb4.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
@@ -20,6 +22,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import java.nio.file.Path;
@@ -48,6 +52,12 @@ public class FabricPlatformHelper implements PlatformHelper {
     @Override
     public Path getConfigDir() {
         return FabricLoader.getInstance().getConfigDir();
+    }
+
+    @Override
+    public void setRing(Player player, ItemStack ring) {
+        TrinketsApi.getAttachment(player).equipped(stack -> stack.getItem() instanceof PowerRingItem, false)
+                .forEach(access -> access.set(ring));
     }
 
     @Override
